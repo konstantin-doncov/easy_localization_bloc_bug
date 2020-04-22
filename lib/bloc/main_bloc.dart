@@ -7,10 +7,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   MainState get initialState => InitialMainState();
 
   @override
+  void onTransition(Transition<MainEvent, MainState> transition) {
+    print(
+        '${transition.currentState}//${transition.event}//${transition.nextState}');
+    super.onTransition(transition);
+  }
+
+  @override
   Stream<MainState> mapEventToState(
     MainEvent event,
   ) async* {
-    if(event is ReadyEvent)
-      yield ReadyState();
+    if (event is ReadyEvent) yield ReadyState();
   }
 }
