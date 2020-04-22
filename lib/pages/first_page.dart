@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatelessWidget {
@@ -8,7 +9,7 @@ class FirstPage extends StatelessWidget {
         title: Text('First page'),
       ),
       body: Container(
-        child: Text('First page ready!'),
+        child: Text(tr('test')),
       ),
     );
   }

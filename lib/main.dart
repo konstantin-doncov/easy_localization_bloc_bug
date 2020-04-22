@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_bloc_bug/bloc/main_bloc.dart';
 import 'package:easy_localization_bloc_bug/bloc/main_event.dart';
@@ -7,15 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(
+
+void main() {
+
+  final bloc = MainBloc(); //singleton simulation
+
+  runApp(
     EasyLocalization(
-      child: BlocProvider<MainBloc>(
-          create: (_) => MainBloc(),
+      child: BlocProvider<MainBloc>.value(
+          value: bloc..add(ReadyEvent()),
           child: MyApp()
       ),
       supportedLocales: [Locale('en', 'US'), Locale('sk', 'SK')],
       path: 'resources/langs',
     ));
+}
 
 class MyApp extends StatefulWidget {
 
@@ -25,16 +33,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  MainBloc _mainBloc;
+//  MainBloc _mainBloc;
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-  @override
-  void initState() {
-    super.initState();
-
-    _mainBloc = BlocProvider.of<MainBloc>(context);
-    _mainBloc.add(ReadyEvent());
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+//
+//    _mainBloc = BlocProvider.of<MainBloc>(context);
+//    _mainBloc.add(ReadyEvent());
+//  }
 
   @override
   Widget build(BuildContext context) {
