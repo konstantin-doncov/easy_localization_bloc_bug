@@ -7,34 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(
-    EasyLocalization(
+import 'bloc/bloc.dart';
+
+void main() => runApp(EasyLocalization(
       child: BlocProvider<MainBloc>(
-          create: (_) => MainBloc(),
-          child: MyApp()
+        create: (_) => MainBloc()..add(ReadyEvent()),
+        child: MyApp(),
       ),
       supportedLocales: [Locale('en', 'US'), Locale('sk', 'SK')],
       path: 'resources/langs',
     ));
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
-  MainBloc _mainBloc;
-  final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _mainBloc = BlocProvider.of<MainBloc>(context);
-    _mainBloc.add(ReadyEvent());
-  }
+  final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +43,11 @@ class _MyAppState extends State<MyApp> {
         locale: EasyLocalization.of(context).locale,
         home: Scaffold(
           body: BlocListener<MainBloc, MainState>(
-            listener: (context, state){
-              if(state is ReadyState){
+            listener: (context, state) {
+              if (state is ReadyState) {
                 print('Go to first_page');
-                rootNavigatorKey.currentState.pushNamedAndRemoveUntil("first_page", (r) => false);
+                rootNavigatorKey.currentState
+                    .pushNamedAndRemoveUntil("first_page", (r) => false);
               }
             },
             child: Navigator(
@@ -64,7 +56,6 @@ class _MyAppState extends State<MyApp> {
               onGenerateRoute: RouteGenerator.generateRoute,
             ),
           ),
-        )
-    );
+        ));
   }
 }
